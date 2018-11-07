@@ -1,0 +1,13 @@
+{
+    "name": "v-frappe",
+    "version": "1.0.0",
+    "description": "A Vue 2 integration using Frappe Charts",
+    "main": "src/v-frappe.js",
+    "repository": "https://github.com/42mate/v-frappe",
+    "author": "jokerwin <jose@lunite.net>",
+    "license": "MIT",
+    "private": false,
+    "dependencies": {
+      "frappe-charts": "^1.1.0"
+    }
+  }
