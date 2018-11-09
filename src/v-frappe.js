@@ -1,3 +1,5 @@
+import {Chart} from 'frappe-charts/dist/frappe-charts.esm'
+
 const ChartFrappe = {
     install(Vue) {
         Vue.component('v-frappe', {
