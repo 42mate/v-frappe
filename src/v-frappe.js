@@ -47,7 +47,7 @@ const ChartFrappe = {
                  * Generate a new Chart of type chartType
                  * @memberOf Chart
                  */
-                initaliazeChart() {
+                graph() {
                     this.data.labels = this.getLabel;
                     this.data.datasets[0].values = this.getDataset;
                     this.data.datasets[0].chartType = this.chartData.chartType;
@@ -68,19 +68,17 @@ const ChartFrappe = {
                         options.hideLine = 1;
                     }
 
-                    var chart = new Chart("#chartfrappe", { // or DOM element
+                    var chart = new Chart("#" + this.chartData.selector, { // or DOM element
                         data: {
                             labels: this.data.labels,
                             datasets: this.data.datasets,
                         },
                         title: this.chartData.title,
                         type: this.data.datasets[0].chartType, // or 'bar', 'line', 'pie', 'percentage'
-                        height: 300,
+                        height: this.chartData.height,
                         colors: ['orange'],
                         lineOptions: options
                     });
-
-
                 },
                 /**
                  * Redraw the Chart when the data is recycled
@@ -143,7 +141,7 @@ const ChartFrappe = {
                 },
             },
             template:
-                '<div id="chartfrappe"></div>',
+                '<div :id=\'this.chartData.selector\' :height=\'parseInt(this.chartData.height) + 20\' :width=\'parseInt(this.chartData.width) + 20\'></div>',
         });
     },
 };
