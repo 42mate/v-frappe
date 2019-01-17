@@ -40,32 +40,60 @@ const ChartFrappe = {
                         let datasets = this.chartData.metric ? parseInt(d[this.chartData.metric]) : parseInt(d);
                         return datasets;
                     });
-                },
+                }
             },
             methods: {
+                getDatasetMixed(field) {
+                    return this.chartData.data.map((d) => {
+                        let datasets = field ? parseInt(d[field]) : parseInt(d);
+                        return datasets;
+                    });
+                },
                 /**
                  * Generate a new Chart of type chartType
                  * @memberOf Chart
                  */
                 graph() {
+                    this.data.datasets = [];
                     this.data.labels = this.getLabel;
-                    this.data.datasets[0].values = this.getDataset;
-                    this.data.datasets[0].chartType = this.chartData.chartType;
 
+                    var chartType = this.chartData.chartType;
                     let options = {
                         regionFill: 0,
                         hideLine: 0
                     };
                     if (this.chartData.chartType === "vbar") {
-                        this.data.datasets[0].chartType = "bar";
-                    } else
-                    if (this.chartData.chartType === "area") {
-                        this.data.datasets[0].chartType = "line";
+                        chartType = "bar";
+                    }
+                    else if (this.chartData.chartType === "area") {
+                        chartType = "line";
                         options.regionFill = 1;
                     }
                     else if (this.chartData.chartType === "scatter") {
-                        this.data.datasets[0].chartType = "line";
+                        chartType = "line";
                         options.hideLine = 1;
+                    }
+                    else if (this.chartData.chartType === "mixed") {
+                        chartType = "axis-mixed";
+                    }
+
+                    if (this.chartData.chartType === 'mixed') {
+                        for (let i = 0; i < this.chartData.metricMixed.length; i++) {
+                            let metric = this.chartData.metricMixed[i];
+                            let dataset = {
+                                name: metric.field,
+                                values: this.getDatasetMixed(metric.field),
+                                chartType: metric.type
+                            }
+                            this.data.datasets.push(dataset);
+                        }
+                    }
+                    else {
+                        let dataset = {
+                            values: this.getDataset,
+                            chartType: chartType,
+                        }
+                        this.data.datasets.push(dataset);
                     }
 
                     var chart = new Chart("#" + this.chartData.selector, { // or DOM element
@@ -74,7 +102,7 @@ const ChartFrappe = {
                             datasets: this.data.datasets,
                         },
                         title: this.chartData.title,
-                        type: this.data.datasets[0].chartType, // or 'bar', 'line', 'pie', 'percentage'
+                        type: chartType, // or 'bar', 'line', 'pie', 'percentage'
                         height: this.chartData.height,
                         colors: ['orange'],
                         lineOptions: options
